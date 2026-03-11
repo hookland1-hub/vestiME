@@ -45,8 +45,6 @@ html.light .bg-grid { opacity: 0.04; }
 .app-header { display:flex; align-items:center; justify-content:space-between; padding:54px 24px 0; }
 .app-logo { font-family:var(--fd); font-size:22px; font-weight:800; letter-spacing:-.02em; }
 .app-logo span { color:var(--ac); }
-.hbadge { display:flex; align-items:center; gap:6px; background:var(--glass); border:1px solid var(--gb); border-radius:100px; padding:6px 12px; font-size:11px; color:var(--mu); }
-.hdot { width:6px; height:6px; border-radius:50%; background:var(--gr); box-shadow:0 0 6px var(--gr); animation:breathe 2.5s ease-in-out infinite; }
 @keyframes breathe{0%,100%{opacity:1;box-shadow:0 0 6px var(--gr)}50%{opacity:.6;box-shadow:0 0 12px var(--gr)}}
 
 /* PROGRESS */
@@ -178,10 +176,6 @@ html.light .bg-grid { opacity: 0.04; }
 .cfg-title svg { flex-shrink:0; }
 .cfg-sub { font-size:11px; color:var(--mu); }
 .cfg-b { padding:0 16px 16px; display:flex; flex-direction:column; gap:12px; }
-.api-row { display:flex; gap:8px; }
-.api-inp { flex:1; background:rgba(255,255,255,.04); border:1px solid var(--gb); color:var(--w); padding:12px 14px; border-radius:var(--rsm); font-family:var(--fb); font-size:13px; outline:none; transition:border-color .25s; }
-.api-inp:focus { border-color:var(--ac); }
-.api-inp.ok { border-color:var(--gr); }
 .save-btn { background:var(--acs); border:1px solid rgba(59,130,246,.3); color:var(--ac); padding:12px 16px; border-radius:var(--rsm); font-size:12px; font-weight:500; cursor:pointer; transition:all .2s; white-space:nowrap; }
 .save-btn:hover { background:rgba(59,130,246,.18); }
 .hint-link { font-size:11px; color:var(--mu); }
@@ -297,8 +291,6 @@ html.light .bg-grid { opacity: 0.04; }
 .add-sc-btn:hover{border-color:var(--ac);color:var(--ac);}
 
 /* THEME TOGGLE */
-.theme-toggle { position:relative; width:52px; height:28px; cursor:pointer; flex-shrink:0; }
-.theme-toggle input { opacity:0; width:0; height:0; position:absolute; }
 .tt-track {
   position:absolute; inset:0;
   background: rgba(255,255,255,0.1);
@@ -331,13 +323,11 @@ html.light .os-slot:hover { background: var(--acs); }
 html.light .outfit-strip { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .cbar-wrap { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .tip-row { background: #fff; border-color: rgba(0,0,0,0.08); }
-html.light .hbadge { background: #fff; border-color: rgba(0,0,0,0.1); color: rgba(30,20,10,0.5); }
 html.light .bottom-nav { background: linear-gradient(to top, #f0ede8 65%, transparent); }
 html.light .modal-sheet { background: #f5f2ee; }
 html.light .mcat { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .icon-opt { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .fl-input { background: #fff; border-color: rgba(0,0,0,0.12); color: var(--w); }
-html.light .api-inp { background: #fff; border-color: rgba(0,0,0,0.12); color: var(--w); }
 html.light .qp { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .ftab { background: #fff; border-color: rgba(0,0,0,0.08); }
 html.light .gchip { background: #fff; border-color: rgba(0,0,0,0.08); }
@@ -382,11 +372,6 @@ html.light .prov-card { background:rgba(255,255,255,0.7); }
 html.light .prov-card.sel { background:var(--acs); }
 
 /* PROVIDER POPUP (header) */
-.hbadge-btn { cursor:pointer; user-select:none; transition:all .2s; gap:5px; }
-.hbadge-btn:hover { border-color:var(--ac); color:var(--ac); }
-.hbadge-arrow { font-size:9px; transition:transform .25s; opacity:.6; }
-.hbadge-btn.open .hbadge-arrow { transform:rotate(180deg); }
-.hbadge-btn.open { border-color:var(--ac); }
 
 .prov-popup {
   position:absolute; top:calc(100% + 8px); right:0;
@@ -815,6 +800,125 @@ html.light .err-modal-sheet { background:#f5f2ee; }
 .err-dismiss-btn:hover { border-color:var(--ac); color:var(--ac); }
 .err-send-status { font-size:11px; color:var(--mu); text-align:center; padding:4px 0 0; }
 
+
+/* ── PALETTE BUTTON ────────────────────────────────────────── */
+.palette-btn {
+  width:36px; height:36px; border-radius:50%;
+  background:var(--glass); border:1px solid var(--gb);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:var(--mu); transition:all .2s;
+  flex-shrink:0;
+}
+.palette-btn:hover { border-color:var(--ac); color:var(--ac); transform:rotate(30deg); }
+
+/* ── THEME PANEL ────────────────────────────────────────────── */
+.theme-panel-overlay {
+  position:fixed; inset:0; z-index:500;
+  background:rgba(0,0,0,.6); backdrop-filter:blur(8px);
+  display:none; align-items:flex-end; justify-content:center;
+}
+.theme-panel-overlay.on { display:flex; animation:mfade .2s ease; }
+.theme-panel {
+  background:var(--bg); border:1px solid var(--gb);
+  border-radius:28px 28px 0 0; width:100%; max-width:480px;
+  padding:0 0 32px;
+  animation:sheetUp .3s cubic-bezier(.22,1,.36,1);
+}
+html.light .theme-panel { background:#f5f2ee; }
+.tp-handle {
+  width:36px; height:4px; background:var(--gb);
+  border-radius:100px; margin:12px auto 0;
+}
+.tp-head {
+  padding:16px 20px 4px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.tp-title { font-family:var(--fd); font-size:15px; font-weight:800; }
+.tp-close {
+  width:28px; height:28px; border-radius:50%;
+  background:var(--glass); border:1px solid var(--gb);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; color:var(--mu); font-size:14px;
+  transition:all .2s;
+}
+.tp-close:hover { color:var(--ow); border-color:var(--mu); }
+.tp-section { padding:12px 20px 4px; }
+.tp-label {
+  font-size:10px; font-weight:700; text-transform:uppercase;
+  letter-spacing:.1em; color:var(--mu); font-family:var(--fd);
+  margin-bottom:10px;
+}
+
+/* Dark/Light row */
+.tp-mode-row {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:4px;
+}
+.tp-mode-card {
+  border:1.5px solid var(--gb); border-radius:var(--rsm);
+  padding:12px 14px; cursor:pointer; transition:all .2s;
+  display:flex; align-items:center; gap:10px;
+  background:var(--glass);
+}
+.tp-mode-card:hover { border-color:var(--ac); }
+.tp-mode-card.active { border-color:var(--ac); background:var(--acs); }
+.tp-mode-dot {
+  width:28px; height:28px; border-radius:8px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+}
+.tp-mode-dot.dark-dot { background:#0d0d14; }
+.tp-mode-dot.light-dot { background:#f0ede8; }
+.tp-mode-name { font-size:12px; font-weight:700; font-family:var(--fd); }
+
+/* Accent color swatches */
+.tp-colors {
+  display:grid; grid-template-columns:repeat(6,1fr); gap:8px;
+}
+.tp-swatch {
+  aspect-ratio:1; border-radius:10px; cursor:pointer;
+  transition:all .22s; position:relative; border:2px solid transparent;
+}
+.tp-swatch:hover { transform:scale(1.12); }
+.tp-swatch.active { border-color:#fff; box-shadow:0 0 0 1px rgba(0,0,0,.3); }
+.tp-swatch.active::after {
+  content:''; position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/14px no-repeat;
+}
+
+/* Custom color picker */
+.tp-custom-row {
+  display:flex; align-items:center; gap:10px; margin-top:8px;
+}
+.tp-custom-label { font-size:12px; color:var(--mu); flex:1; }
+.tp-color-input {
+  width:40px; height:40px; border-radius:10px; border:1.5px solid var(--gb);
+  padding:3px; cursor:pointer; background:none;
+  appearance:none; -webkit-appearance:none;
+}
+.tp-color-input::-webkit-color-swatch-wrapper { padding:0; }
+.tp-color-input::-webkit-color-swatch { border:none; border-radius:7px; }
+
+/* Preview strip */
+.tp-preview {
+  margin:12px 20px 0;
+  background:var(--glass); border:1px solid var(--gb);
+  border-radius:var(--rsm); padding:12px 14px;
+  display:flex; align-items:center; gap:10px;
+}
+.tp-preview-dot {
+  width:32px; height:32px; border-radius:8px;
+  background:var(--ac); flex-shrink:0;
+}
+.tp-preview-info { flex:1; }
+.tp-preview-name { font-size:12px; font-weight:700; font-family:var(--fd); margin-bottom:2px; }
+.tp-preview-hex { font-size:10px; color:var(--mu); font-family:monospace; }
+.tp-reset {
+  font-size:11px; color:var(--mu); text-decoration:underline;
+  cursor:pointer; background:none; border:none; padding:0;
+  transition:color .2s;
+}
+.tp-reset:hover { color:var(--ac); }
+
 </style>
 </head>
 <body>
@@ -838,22 +942,10 @@ html.light .err-modal-sheet { background:#f5f2ee; }
   <div class="app-header">
     <div class="app-logo" onclick="resetAll()" style="cursor:pointer" title="Torna alla home">Vesti<span>ME</span></div>
     <div style="display:flex;align-items:center;gap:8px">
-      <!-- PROVIDER BADGE — cliccabile -->
-      <div class="hbadge hbadge-btn" id="hProvBadge" onclick="toggleProvPopup()" title="Cambia motore AI">
-        <div class="hdot" id="hDot"></div>
-        <span id="hProvName">AI</span>
-        <span class="hbadge-arrow" id="hBadgeArrow">▾</span>
-      </div>
-      <!-- POPUP PROVIDER -->
-      <div class="prov-popup" id="provPopup">
-        <div class="pp-title">Motore AI</div>
-        <div id="ppList"></div>
-      </div>
-      <label class="theme-toggle" title="Cambia tema" aria-label="Cambia tema chiaro/scuro">
-        <input type="checkbox" id="themeChk" onchange="toggleTheme(this.checked)">
-        <div class="tt-track"></div>
-        <div class="tt-thumb" id="ttThumb">🌙</div>
-      </label>
+      <!-- PALETTE BUTTON -->
+      <button class="palette-btn" id="paletteBtn" onclick="openThemePanel()" title="Personalizza tema">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="13.5" cy="6.5" r="1.5"/><circle cx="17.5" cy="10.5" r="1.5"/><circle cx="8.5" cy="7.5" r="1.5"/><circle cx="6.5" cy="12.5" r="1.5"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10c1.1 0 2-.9 2-2v-.5c0-.55.22-1.05.59-1.41.36-.37.86-.59 1.41-.59H18c2.21 0 4-1.79 4-4 0-5.52-4.48-10-10-10z"/></svg>
+      </button>
     </div>
   </div>
 
@@ -962,20 +1054,15 @@ html.light .err-modal-sheet { background:#f5f2ee; }
     <div id="providerGrid" style="display:none"></div>
     <div id="providerBadge" style="display:none"></div>
 
-    <!-- API KEY (dynamic per provider) -->
-    <div class="cfg-section" id="apiSection">
-      <div class="cfg-h">
+    <!-- Powered by badge -->
+    <div class="cfg-section" id="apiSection" style="padding:12px 16px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" style="color:var(--ac);flex-shrink:0"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
         <div>
-          <div class="cfg-title" id="apiTitle"><svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg> Gemini API Key</div>
-          <div class="cfg-sub" id="apiSub">Necessaria per generare le immagini con Google AI</div>
+          <div style="font-size:13px;font-weight:700;font-family:var(--fd)">Powered by Google Gemini</div>
+          <div style="font-size:11px;color:var(--mu);margin-top:1px">Generazione AI · Modello 3.1 Flash Image</div>
         </div>
-        <a id="apiLink" href="https://aistudio.google.com/apikey" target="_blank" class="api-ext-link">Ottieni key →</a>
-      </div>
-      <div class="cfg-b" style="padding-top:0">
-        <div class="api-row">
-          <input type="password" class="api-inp" id="apiKey" placeholder="Incolla la tua API Key..." autocomplete="off">
-          <button class="save-btn" onclick="saveKey()">Salva</button>
-        </div>
+        <div style="margin-left:auto;width:8px;height:8px;border-radius:50%;background:var(--gr);box-shadow:0 0 6px var(--gr);flex-shrink:0"></div>
       </div>
     </div>
 
@@ -1160,6 +1247,55 @@ html.light .err-modal-sheet { background:#f5f2ee; }
   </div>
 </div>
 
+<!-- THEME PANEL -->
+<div class="theme-panel-overlay" id="themePanelOverlay" onclick="if(event.target===this)closeThemePanel()">
+  <div class="theme-panel">
+    <div class="tp-handle"></div>
+    <div class="tp-head">
+      <div class="tp-title">Personalizza tema</div>
+      <button class="tp-close" onclick="closeThemePanel()">✕</button>
+    </div>
+
+    <!-- Mode -->
+    <div class="tp-section">
+      <div class="tp-label">Modalità</div>
+      <div class="tp-mode-row">
+        <div class="tp-mode-card active" id="tpModeDark" onclick="setMode('dark')">
+          <div class="tp-mode-dot dark-dot">🌙</div>
+          <div class="tp-mode-name">Scuro</div>
+        </div>
+        <div class="tp-mode-card" id="tpModeLight" onclick="setMode('light')">
+          <div class="tp-mode-dot light-dot">☀️</div>
+          <div class="tp-mode-name">Chiaro</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Accent colors -->
+    <div class="tp-section">
+      <div class="tp-label">Colore principale</div>
+      <div class="tp-colors" id="tpSwatches">
+        <!-- rendered by JS -->
+      </div>
+      <div class="tp-custom-row">
+        <span class="tp-custom-label">Colore personalizzato</span>
+        <input type="color" class="tp-color-input" id="tpCustomColor" value="#3b82f6" oninput="setCustomAccent(this.value)">
+      </div>
+    </div>
+
+    <!-- Preview + reset -->
+    <div class="tp-preview">
+      <div class="tp-preview-dot" id="tpPreviewDot"></div>
+      <div class="tp-preview-info">
+        <div class="tp-preview-name" id="tpPreviewName">Blu</div>
+        <div class="tp-preview-hex" id="tpPreviewHex">#3b82f6</div>
+      </div>
+      <button class="tp-reset" onclick="resetTheme()">Ripristina</button>
+    </div>
+
+  </div>
+</div>
+
 <!-- ERROR REPORT MODAL -->
 <div class="err-modal-overlay" id="errModal">
   <div class="err-modal-sheet">
@@ -1275,8 +1411,6 @@ const PROVIDERS = [
     price: 'Pay-per-use',
     tags: ['Google', 'AI'],
     tagStyles: ['', ''],
-    keyName: 'gemini_key',
-    keyPlaceholder: 'Incolla la tua Gemini API Key...',
     keyLink: 'https://aistudio.google.com/apikey',
     keyLinkText: 'aistudio.google.com/apikey',
     type: 'gemini',
@@ -1296,7 +1430,7 @@ const APP = {
   screen: 1, photos: [], outfit: [], scenario: null, pose: null,
   result: null, resultBlob: null, quality: '2K',
   provider: null,
-  keys: JSON.parse(localStorage.getItem('fm_keys') || '{}'),
+  keys: {},  // gestite dal proxy
   customSc: JSON.parse(localStorage.getItem('fm_custom_sc') || '[]'),
   modelName: localStorage.getItem('fm_model_name') || '',
   savedModels: getSavedModels(),
@@ -1512,8 +1646,7 @@ function renderProviderGrid(){
     card.onclick=()=>selectProvider(prov);
     grid.appendChild(card);
   });
-  updateApiSection();
-}
+  }
 
 function selectProvider(prov, fromPopup){
   APP.provider=prov;
@@ -1521,60 +1654,9 @@ function selectProvider(prov, fromPopup){
   document.querySelectorAll('.prov-card').forEach((c,i)=>c.classList.toggle('sel',PROVIDERS[i].id===prov.id));
   const pb=document.getElementById('providerBadge');
   if(pb) pb.textContent=prov.name+' selezionato';
-  updateApiSection();
-  updateHeaderBadge();
+    updateHeaderBadge();
   renderPopupList();
   if(!fromPopup) toast('\u2713 '+prov.name+' selezionato','ok');
-}
-
-function updateHeaderBadge(){
-  const badge=document.getElementById('hProvBadge');
-  const nameEl=document.getElementById('hProvName');
-  const dot=document.getElementById('hDot');
-  if(!badge) return;
-  if(APP.provider){
-    nameEl.textContent=APP.provider.name;
-    dot.style.background='var(--ac)';
-    dot.style.boxShadow='0 0 6px var(--ac)';
-  } else {
-    nameEl.textContent='AI';
-    dot.style.background='var(--gr)';
-    dot.style.boxShadow='0 0 6px var(--gr)';
-  }
-}
-
-function renderPopupList(){
-  const list=document.getElementById('ppList');
-  if(!list) return;
-  list.innerHTML='';
-  PROVIDERS.forEach(prov=>{
-    const item=document.createElement('div');
-    item.className='pp-item'+(APP.provider&&APP.provider.id===prov.id?' sel':'');
-    item.innerHTML=`<div class="pp-logo">${prov.logo}</div><div class="pp-info"><div class="pp-name">${prov.name}</div><div class="pp-price">${prov.price}</div></div><div class="pp-check">\u2713</div>`;
-    item.onclick=()=>{
-      selectProvider(prov, true);
-      closeProvPopup();
-      // Se siamo su screen 5, aggiorna anche la griglia provider
-      if(APP.screen===5) renderProviderGrid();
-      toast('\u2713 '+prov.name+' selezionato','ok');
-    };
-    list.appendChild(item);
-  });
-}
-
-function toggleProvPopup(){
-  const popup=document.getElementById('provPopup');
-  const badge=document.getElementById('hProvBadge');
-  const isOpen=popup.classList.contains('open');
-  if(isOpen){ closeProvPopup(); return; }
-  renderPopupList();
-  popup.classList.add('open');
-  badge.classList.add('open');
-}
-
-function closeProvPopup(){
-  document.getElementById('provPopup').classList.remove('open');
-  document.getElementById('hProvBadge').classList.remove('open');
 }
 
 // Close popup when clicking outside
@@ -1586,30 +1668,6 @@ document.addEventListener('click',function(e){
   }
 });
 
-function updateApiSection(){
-  if(!APP.provider) return;
-  const prov=APP.provider;
-  document.getElementById('apiTitle').textContent='🔑 API Key — '+prov.name;
-  document.getElementById('apiSub').textContent=prov.desc.split('.')[0];
-  const inp=document.getElementById('apiKey');
-  inp.placeholder=prov.keyPlaceholder;
-  const saved=APP.keys[prov.keyName]||'';
-  inp.value=saved;
-  inp.className='api-inp'+(saved?' ok':'');
-  const link=document.getElementById('apiLink');
-  link.href='https://'+prov.keyLink.replace('https://','');
-  link.textContent=prov.keyLinkText+' \u2192';
-}
-
-function saveKey(){
-  if(!APP.provider){toast('\u26a0\ufe0f Seleziona prima un provider','err');return;}
-  const k=document.getElementById('apiKey').value.trim();
-  if(!k){toast('\u26a0\ufe0f API Key non valida','err');return;}
-  APP.keys[APP.provider.keyName]=k;
-  localStorage.setItem('fm_keys',JSON.stringify(APP.keys));
-  document.getElementById('apiKey').classList.add('ok');
-  toast('\u2713 API Key salvata','ok');
-}
 
 function renderGenSummary(){
   const ch=document.getElementById('genChips');let h='';
@@ -1624,7 +1682,8 @@ function renderGenSummary(){
 // ── GENERATION LOGGER ────────────────────────────────────────────
 var GEN_LOG = null; // populated on every attempt
 
-function initGenLog(key){
+function initGenLog(){
+  var key = null;
   GEN_LOG = {
     ts: new Date().toISOString(),
     model: 'gemini-3.1-flash-image-preview',
@@ -1639,7 +1698,7 @@ function initGenLog(key){
     preserveId: document.getElementById('tId').classList.contains('on'),
     preserveFab: document.getElementById('tFab').classList.contains('on'),
     fullBody: document.getElementById('tFull').classList.contains('on'),
-    keyPrefix: key ? key.substring(0,8)+'...' : 'missing',
+    keyPrefix: 'proxy',
     step1Prompt: null,
     step1Response: null,
     finalPrompt: null,
@@ -1660,8 +1719,6 @@ function initGenLog(key){
 async function generate() {
   if(APP.busy) return;
   if(!APP.provider){ toast('\u26a0\ufe0f Seleziona un motore AI','err'); return; }
-  const key = APP.keys[APP.provider.keyName] || document.getElementById('apiKey').value.trim();
-  if(!key){ toast('\u26a0\ufe0f Inserisci la Gemini API Key','err'); return; }
   if(!APP.photos.length){ toast('\u26a0\ufe0f Carica le foto modello','err'); return; }
   if(!APP.outfit.length){ toast('\u26a0\ufe0f Aggiungi almeno un capo','err'); return; }
 
@@ -1679,10 +1736,10 @@ async function generate() {
   var t0 = Date.now();
   var timeInt = setInterval(function(){ document.getElementById('loaderTime').textContent = Math.floor((Date.now()-t0)/1000)+'s'; }, 1000);
 
-  initGenLog(key);
+  initGenLog();
 
   try {
-    var imageUrl = await generateGemini(key);
+    var imageUrl = await generateGemini();
     clearInterval(stepInt); clearInterval(timeInt);
     if(!imageUrl) throw new Error('Nessuna immagine ricevuta da Gemini.');
 
@@ -1726,11 +1783,10 @@ async function generate() {
 // Step 1: Describe each garment (text-only, cheap)
 // Step 2: Full generation with enriched prompt + images
 
-async function generateGemini(key) {
+async function generateGemini() {
   var MODEL = 'gemini-3.1-flash-image-preview';
-  var BASE = 'https://generativelanguage.googleapis.com/v1beta/models/';
-  var TEXT_ENDPOINT = BASE + 'gemini-3-flash-preview:generateContent';
-  var IMG_ENDPOINT  = BASE + MODEL + ':generateContent';
+  var TEXT_MODEL = 'gemini-3-flash-preview';
+  var PROXY = '/api/generate';
 
   var nameInp = document.getElementById('modelName');
   var subjectName = (nameInp && nameInp.value.trim()) || APP.modelName || 'the model';
@@ -1750,15 +1806,15 @@ async function generateGemini(key) {
       { text: 'Describe this clothing item in 1-2 sentences focusing on: garment type, exact color, fabric texture, visible patterns, distinctive details (buttons, collar, cut, fit). Be precise and concise. Reply with the description only, no preamble.' },
       { inline_data: { mime_type: mimeg, data: b64g } }
     ];
-    var descResp = await fetch(TEXT_ENDPOINT, {
+    var descResp = await fetch(PROXY, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-      body: JSON.stringify({ contents: [{ parts: descParts }] })
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ model: TEXT_MODEL, body: { contents: [{ parts: descParts }] } })
     });
     var descData = await descResp.json();
     if(!descResp.ok){
       var dErr = (descData && descData.error && descData.error.message) || ('HTTP '+descResp.status);
-      if(descResp.status===401||descResp.status===403) throw new Error('API Key Gemini non valida. Controlla su aistudio.google.com/apikey');
+      if(descResp.status===401||descResp.status===403) throw new Error('Errore di autenticazione. Contatta il supporto.');
       if(descResp.status===429) throw new Error('Limite richieste Gemini raggiunto. Attendi qualche secondo e riprova.');
       throw new Error('Gemini Step 1 (descrizione capo): '+dErr);
     }
@@ -1841,10 +1897,10 @@ async function generateGemini(key) {
 
   GEN_LOG.requestPayloadSize = JSON.stringify(payload).length;
 
-  var resp = await fetch(IMG_ENDPOINT, {
+  var resp = await fetch(PROXY, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
-    body: JSON.stringify(payload)
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: MODEL, body: payload })
   });
 
   GEN_LOG.httpStatus = resp.status;
@@ -1863,7 +1919,7 @@ async function generateGemini(key) {
   if(!resp.ok){
     var errMsg = (data && data.error && data.error.message) || ('HTTP ' + resp.status);
     GEN_LOG.errorMessage = errMsg;
-    if(resp.status===401||resp.status===403) throw new Error('API Key Gemini non valida. Controlla su aistudio.google.com/apikey');
+    if(resp.status===401||resp.status===403) throw new Error('Errore di autenticazione con il server. Contatta il supporto.');
     if(resp.status===429) throw new Error('Limite richieste Gemini raggiunto. Attendi qualche secondo e riprova.');
     if(resp.status===400) throw new Error('Richiesta non valida (400): ' + errMsg + '. Verifica le immagini caricate.');
     if(resp.status===500) throw new Error('Errore interno Gemini (500). Riprova tra qualche secondo.');
@@ -1929,7 +1985,6 @@ function openErrModal(errMsg){
     errSection('Capi outfit', (log.outfitItems || []).join(', ') || '—'),
     errSection('Scenario', log.scenario || '—'),
     errSection('Posa', log.pose || '—'),
-    errSection('API Key (prefix)', log.keyPrefix || '—'),
     errSection('Payload size', log.requestPayloadSize ? (Math.round(log.requestPayloadSize/1024))+'KB' : '—'),
     errSection('Prompt generato', log.finalPrompt ? log.finalPrompt.substring(0, 800) + (log.finalPrompt.length > 800 ? '...' : '') : '—'),
     errSection('Risposta API (raw)', log.apiRawResponse || '—'),
@@ -2484,21 +2539,128 @@ function initNetlifyIdentity(){
   });
 }
 
-// THEME
-function toggleTheme(isLight) {
-  const html=document.documentElement;
-  const thumb=document.getElementById('ttThumb');
-  if(isLight){html.classList.add('light');html.classList.remove('dark');if(thumb)thumb.textContent='\u2600';localStorage.setItem('fm_theme','light');}
-  else{html.classList.remove('light');html.classList.add('dark');if(thumb)thumb.textContent='🌙';localStorage.setItem('fm_theme','dark');}
+// ── THEME & COLOR SYSTEM ────────────────────────────────────────────────
+
+var ACCENT_PRESETS = [
+  {name:'Blu',     hex:'#3b82f6'},
+  {name:'Indaco',  hex:'#6366f1'},
+  {name:'Viola',   hex:'#8b5cf6'},
+  {name:'Fucsia',  hex:'#d946ef'},
+  {name:'Rosa',    hex:'#ec4899'},
+  {name:'Rosso',   hex:'#ef4444'},
+  {name:'Arancio', hex:'#f97316'},
+  {name:'Ambra',   hex:'#f59e0b'},
+  {name:'Verde',   hex:'#22c55e'},
+  {name:'Smeraldo',hex:'#10b981'},
+  {name:'Teal',    hex:'#14b8a6'},
+  {name:'Ciano',   hex:'#06b6d4'},
+];
+
+function hexToRgb(hex){
+  var r=parseInt(hex.slice(1,3),16);
+  var g=parseInt(hex.slice(3,5),16);
+  var b=parseInt(hex.slice(5,7),16);
+  return {r:r,g:g,b:b};
 }
+
+function applyAccent(hex){
+  var rgb=hexToRgb(hex);
+  var r=rgb.r,g=rgb.g,b=rgb.b;
+  var r2=Math.min(255,r+45),g2=Math.min(255,g+45),b2=Math.min(255,b+45);
+  var hex2='#'+[r2,g2,b2].map(function(v){return v.toString(16).padStart(2,'0');}).join('');
+  var root=document.documentElement;
+  root.style.setProperty('--ac', hex);
+  root.style.setProperty('--ac2', hex2);
+  root.style.setProperty('--acg', 'rgba('+r+','+g+','+b+',.25)');
+  root.style.setProperty('--acs', 'rgba('+r+','+g+','+b+',.10)');
+}
+
+function setMode(mode){
+  var html=document.documentElement;
+  if(mode==='light'){html.classList.add('light');html.classList.remove('dark');}
+  else{html.classList.remove('light');html.classList.add('dark');}
+  localStorage.setItem('fm_theme', mode);
+  var dc=document.getElementById('tpModeDark');
+  var lc=document.getElementById('tpModeLight');
+  if(dc) dc.classList.toggle('active', mode==='dark');
+  if(lc) lc.classList.toggle('active', mode==='light');
+}
+
+function setAccent(hex, name){
+  applyAccent(hex);
+  localStorage.setItem('fm_accent', hex);
+  var dot=document.getElementById('tpPreviewDot');
+  var nm=document.getElementById('tpPreviewName');
+  var hx=document.getElementById('tpPreviewHex');
+  if(dot) dot.style.background=hex;
+  if(nm) nm.textContent=name||'Custom';
+  if(hx) hx.textContent=hex;
+  var ci=document.getElementById('tpCustomColor');
+  if(ci) ci.value=hex;
+  document.querySelectorAll('.tp-swatch').forEach(function(s){
+    s.classList.toggle('active', s.dataset.hex===hex);
+  });
+}
+
+function setCustomAccent(hex){ setAccent(hex,'Custom'); }
+
+function resetTheme(){
+  localStorage.removeItem('fm_accent');
+  localStorage.removeItem('fm_theme');
+  document.documentElement.style.removeProperty('--ac');
+  document.documentElement.style.removeProperty('--ac2');
+  document.documentElement.style.removeProperty('--acg');
+  document.documentElement.style.removeProperty('--acs');
+  setMode('dark');
+  renderThemePanel();
+}
+
+function openThemePanel(){
+  renderThemePanel();
+  document.getElementById('themePanelOverlay').classList.add('on');
+}
+
+function closeThemePanel(){
+  document.getElementById('themePanelOverlay').classList.remove('on');
+}
+
+function renderThemePanel(){
+  var wrap=document.getElementById('tpSwatches');
+  if(!wrap) return;
+  var savedHex=localStorage.getItem('fm_accent')||'#3b82f6';
+  wrap.innerHTML='';
+  ACCENT_PRESETS.forEach(function(p){
+    var s=document.createElement('div');
+    s.className='tp-swatch'+(savedHex===p.hex?' active':'');
+    s.style.background=p.hex;
+    s.dataset.hex=p.hex;
+    s.title=p.name;
+    s.onclick=(function(h,n){return function(){setAccent(h,n);};})(p.hex,p.name);
+    wrap.appendChild(s);
+  });
+  var isDark=!document.documentElement.classList.contains('light');
+  var dc=document.getElementById('tpModeDark');
+  var lc=document.getElementById('tpModeLight');
+  if(dc) dc.classList.toggle('active',isDark);
+  if(lc) lc.classList.toggle('active',!isDark);
+  var preset=ACCENT_PRESETS.find(function(p){return p.hex===savedHex;});
+  setAccent(savedHex, preset?preset.name:'Custom');
+}
+
+function toggleTheme(isLight){ setMode(isLight?'light':'dark'); }
+
 function initTheme(){
-  const saved=localStorage.getItem('fm_theme');
-  const prefersDark=!window.matchMedia||window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const useDark=saved?saved==='dark':prefersDark;
-  const chk=document.getElementById('themeChk');
-  if(!useDark){if(chk)chk.checked=true;toggleTheme(true);}
-  else{if(chk)chk.checked=false;toggleTheme(false);}
-  if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){if(!localStorage.getItem('fm_theme'))toggleTheme(!e.matches);});}
+  var savedMode=localStorage.getItem('fm_theme');
+  var prefersDark=!window.matchMedia||window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var useDark=savedMode?savedMode==='dark':prefersDark;
+  setMode(useDark?'dark':'light');
+  var savedAccent=localStorage.getItem('fm_accent');
+  if(savedAccent) applyAccent(savedAccent);
+  if(window.matchMedia){
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){
+      if(!localStorage.getItem('fm_theme')) setMode(e.matches?'dark':'light');
+    });
+  }
 }
 initTheme();
 
