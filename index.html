@@ -1487,12 +1487,41 @@ function updNext(){
 
 // SCREEN 1
 
+// ── COMPRESS IMAGE ────────────────────────────────────────────────────────
+// Riduce ogni immagine a max 900px lato lungo, JPEG q=0.82
+// Riduce payload da ~15MB a ~500KB totali → sotto il limite 4.5MB Vercel
+function compressImage(dataUrl, callback) {
+  var img = new Image();
+  img.onload = function() {
+    var MAX = 900;
+    var w = img.width, h = img.height;
+    if (w > MAX || h > MAX) {
+      if (w > h) { h = Math.round(h * MAX / w); w = MAX; }
+      else        { w = Math.round(w * MAX / h); h = MAX; }
+    }
+    var canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    var ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    callback(canvas.toDataURL('image/jpeg', 0.82));
+  };
+  img.src = dataUrl;
+}
+
+function addPhotoCompressed(dataUrl, isNew) {
+  if (APP.photos.length >= 4) return;
+  compressImage(dataUrl, function(compressed) {
+    if (isNew) APP.activeModelId = null;
+    APP.photos.push({ url: compressed });
+    renderPhotos();
+  });
+}
+
 function addPhotos(e){
-  APP.activeModelId = null; // nuove foto = nuovo modello non ancora salvato
   Array.from(e.target.files).forEach(function(f){
     if(APP.photos.length>=4)return;
     var r=new FileReader();
-    r.onload=function(ev){ APP.photos.push({url:ev.target.result}); renderPhotos(); };
+    r.onload=function(ev){ addPhotoCompressed(ev.target.result, true); };
     r.readAsDataURL(f);
   });
 }
@@ -1545,7 +1574,7 @@ function initPZoneDnD(){
     Array.from(e.dataTransfer.files).filter(function(f){return f.type.startsWith('image/');}).forEach(function(f){
       if(APP.photos.length>=4)return;
       var r=new FileReader();
-      r.onload=function(ev){APP.photos.push({url:ev.target.result});renderPhotos();};
+      r.onload=function(ev){addPhotoCompressed(ev.target.result, true);};
       r.readAsDataURL(f);
     });
   });
@@ -1590,11 +1619,11 @@ function buildSlot(cat,item){
   }
   return d;
 }
-function handleSlot(e,catId,catLabel,catIcon){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{APP.outfit=APP.outfit.filter(o=>o.category!==catId);APP.outfit.push({id:'i'+(APP.nid++),category:catId,categoryLabel:catLabel,categoryIcon:catIcon,url:ev.target.result});renderOutfit();toast(' '+catIcon+' '+catLabel+' aggiunto','ok');};r.readAsDataURL(f);}
+function handleSlot(e,catId,catLabel,catIcon){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){compressImage(ev.target.result,function(c){APP.outfit=APP.outfit.filter(o=>o.category!==catId);APP.outfit.push({id:'i'+(APP.nid++),category:catId,categoryLabel:catLabel,categoryIcon:catIcon,url:c});renderOutfit();toast(' '+catIcon+' '+catLabel+' aggiunto','ok');});};r.readAsDataURL(f);}
 function rmOutfit(id){APP.outfit=APP.outfit.filter(o=>o.id!==id);renderOutfit();}
 function updOutfitStrip(){const el=document.getElementById('outfitStrip');if(!APP.outfit.length){el.innerHTML='<span class="os-empty">Aggiungi il primo capo </span>';return;}el.innerHTML=APP.outfit.map(it=>`<div class="os-thumb"><img src="${it.url}"><span>${it.categoryIcon}</span></div>`).join('');}
 function openOutfitModal(){const extra=CATS.filter(c=>!MAIN_CATS.includes(c.id));const mcatGridEl=document.getElementById('mcatGrid');mcatGridEl.innerHTML='';extra.forEach(c=>{const d=document.createElement('div');d.className='mcat';d.innerHTML=`<div class="mi">${c.icon}</div><div class="ml">${c.label}</div>`;d.onclick=()=>pickExtra(c.id,c.label,c.icon);mcatGridEl.appendChild(d);});openModal('outfitModal');}
-function pickExtra(catId,catLabel,catIcon){closeModal('outfitModal');const inp=document.createElement('input');inp.type='file';inp.accept='image/jpeg,image/png,image/webp,image/gif';inp.onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{APP.outfit=APP.outfit.filter(o=>o.category!==catId);APP.outfit.push({id:'i'+(APP.nid++),category:catId,categoryLabel:catLabel,categoryIcon:catIcon,url:ev.target.result});renderOutfit();toast(' '+catIcon+' '+catLabel+' aggiunto','ok');};r.readAsDataURL(f);};inp.click();}
+function pickExtra(catId,catLabel,catIcon){closeModal('outfitModal');const inp=document.createElement('input');inp.type='file';inp.accept='image/jpeg,image/png,image/webp,image/gif';inp.onchange=function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){compressImage(ev.target.result,function(c){APP.outfit=APP.outfit.filter(o=>o.category!==catId);APP.outfit.push({id:'i'+(APP.nid++),category:catId,categoryLabel:catLabel,categoryIcon:catIcon,url:c});renderOutfit();toast(' '+catIcon+' '+catLabel+' aggiunto','ok');});};r.readAsDataURL(f);};inp.click();}
 
 // SCREEN 3
 
