@@ -2,6 +2,15 @@
 // La API key non è mai esposta al client.
 // Vercel la legge dalle Environment Variables.
 
+// Aumenta il limite body a 10MB (immagini base64 compresse)
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+};
+
 const GEMINI_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/';
 
 // Rate limiting in-memory (per IP, si resetta ad ogni cold start)
